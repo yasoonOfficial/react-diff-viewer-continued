@@ -1,6 +1,10 @@
 <img src='https://github.com/Aeolun/react-diff-viewer-continued/raw/master/logo_dark.png' width="100%" alt='React Diff Viewer' />
 <br/>
 
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
+
 [![npm version](https://badge.fury.io/js/react-diff-viewer-continued.svg)](https://badge.fury.io/js/react-diff-viewer-continued)
 [![GitHub license](https://img.shields.io/github/license/aeolun/react-diff-viewer-continued.svg)](https://github.com/aeolun/react-diff-viewer-continued/blob/master/LICENSE)
 
@@ -361,6 +365,17 @@ pnpm start:examples
 ```
 
 Check package.json for more build scripts.
+
+## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
 
 ## License
 
