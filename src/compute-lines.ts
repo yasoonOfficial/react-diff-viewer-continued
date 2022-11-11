@@ -6,6 +6,7 @@ export enum DiffType {
   DEFAULT = 0,
   ADDED = 1,
   REMOVED = 2,
+  CHANGED = 3
 }
 
 // See https://github.com/kpdecker/jsdiff/tree/v4.0.1#api for more info on the below JsDiff methods
@@ -118,14 +119,14 @@ const computeDiff = (
  * @param oldString Old string to compare.
  * @param newString New string to compare with old string.
  * @param disableWordDiff Flag to enable/disable word diff.
- * @param compareMethod JsDiff text diff method from https://github.com/kpdecker/jsdiff/tree/v4.0.1#api
+ * @param lineCompareMethod JsDiff text diff method from https://github.com/kpdecker/jsdiff/tree/v4.0.1#api
  * @param linesOffset line number to start counting from
  */
 const computeLineInformation = (
   oldString: string | Object,
   newString: string | Object,
   disableWordDiff: boolean = false,
-  compareMethod: string = DiffMethod.CHARS,
+  lineCompareMethod: string = DiffMethod.CHARS,
   linesOffset: number = 0,
 ): ComputedLineInformation => {
   let diffArray: Diff.Change[] = [];
@@ -213,7 +214,7 @@ const computeLineInformation = (
                   right.value = rightValue;
                 } else {
                   right.type = type;
-                  // Do word level diff and assign the corresponding values to the
+                  // Do char level diff and assign the corresponding values to the
                   // left and right diff information object.
                   if (disableWordDiff) {
                     right.value = rightValue;
@@ -221,7 +222,7 @@ const computeLineInformation = (
                     const computedDiff = computeDiff(
                         line,
                         rightValue as string,
-                        compareMethod,
+                        lineCompareMethod
                     );
                     right.value = computedDiff.right;
                     left.value = computedDiff.left;
@@ -260,13 +261,14 @@ const computeLineInformation = (
       .filter(Boolean);
   };
 
+
   diffArray.forEach(({ added, removed, value }: diff.Change, index): void => {
     lineInformation = [
       ...lineInformation,
       ...getLineInformation(value, index, added, removed),
     ];
   });
-
+  console.log(lineInformation)
   return {
     lineInformation,
     diffLines,

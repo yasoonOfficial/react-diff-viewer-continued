@@ -1,17 +1,16 @@
 import './style.scss';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import {Component, MouseEvent} from 'react';
 
-import ReactDiff, { DiffMethod } from '../../src/index';
+import ReactDiff, {DiffMethod} from '../../src/index';
+import logo from '../../logo.png';
+import cn from 'classnames';
+import {render} from "react-dom";
 
 const oldJs = require('./diff/javascript/old.rjs').default;
 const newJs = require('./diff/javascript/new.rjs').default;
 
 const oldJson = require('./diff/json/old.json');
 const newJson = require('./diff/json/new.json');
-
-import logo from '../../logo.png';
-import cn from 'classnames';
 
 interface ExampleState {
   splitView?: boolean;
@@ -25,7 +24,7 @@ interface ExampleState {
 
 const P = (window as any).Prism;
 
-class Example extends React.Component<{}, ExampleState> {
+class Example extends Component<{}, ExampleState> {
   public constructor(props: any) {
     super(props);
     this.state = {
@@ -34,12 +33,13 @@ class Example extends React.Component<{}, ExampleState> {
       splitView: true,
       customGutter: true,
       enableSyntaxHighlighting: true,
+      compareMethod: DiffMethod.CHARS
     };
   }
 
   private onLineNumberClick = (
     id: string,
-    e: React.MouseEvent<HTMLTableCellElement>,
+    e: MouseEvent<HTMLTableCellElement>,
   ): void => {
     let highlightLine = [id];
     if (e.shiftKey && this.state.highlightLine.length === 1) {
@@ -160,15 +160,31 @@ class Example extends React.Component<{}, ExampleState> {
               </label>
               <span>Custom gutter</span>
             </div>
+            <div>
+              <label className={'switch'}>
+                <input
+                  type="checkbox"
+                  checked={this.state.compareMethod === DiffMethod.JSON}
+                  onChange={() => {
+                    this.setState({
+                      compareMethod: this.state.compareMethod === DiffMethod.JSON ? DiffMethod.CHARS : DiffMethod.JSON,
+                    });
+                  }}
+                />
+                <span className="slider round"></span>
+              </label>
+              <span>JSON</span>
+            </div>
           </div>
         </div>
         <div className="diff-viewer">
           <ReactDiff
             highlightLines={this.state.highlightLine}
             onLineNumberClick={this.onLineNumberClick}
-            oldValue={oldJs}
+            oldValue={this.state.compareMethod === DiffMethod.JSON ? oldJson : oldJs}
+            compareMethod={this.state.compareMethod}
             splitView={this.state.splitView}
-            newValue={newJs}
+            newValue={this.state.compareMethod === DiffMethod.JSON ? newJson : newJs}
             renderGutter={
               this.state.customGutter
                 ? (diffData) => {
@@ -186,7 +202,9 @@ class Example extends React.Component<{}, ExampleState> {
                         title={'extra info'}
                       >
                         <pre className={cn(diffData.styles.lineNumber, {})}>
-                          {diffData.type == 2
+                          {diffData.type == 3
+                            ? 'CHG'
+                            : diffData.type == 2
                             ? 'DEL'
                             : diffData.type == 1
                             ? 'ADD'
@@ -205,8 +223,8 @@ class Example extends React.Component<{}, ExampleState> {
                 : undefined
             }
             useDarkTheme={this.state.theme === 'dark'}
-            leftTitle="webpack.config.js master@2178133 - pushed 2 hours ago."
-            rightTitle="webpack.config.js master@64207ee - pushed 13 hours ago."
+            leftTitle={`${this.state.compareMethod === DiffMethod.JSON ? 'package.json' : 'webpack.config.js'} master@2178133 - pushed 2 hours ago.`}
+            rightTitle={`${this.state.compareMethod === DiffMethod.JSON ? 'package.json' : 'webpack.config.js'} master@64207ee - pushed 13 hours ago.`}
           />
         </div>
         <footer>
@@ -224,4 +242,4 @@ class Example extends React.Component<{}, ExampleState> {
   }
 }
 
-ReactDOM.render(<Example />, document.getElementById('app'));
+render(<Example />, document.getElementById('app'));

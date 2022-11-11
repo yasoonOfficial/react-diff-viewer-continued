@@ -4,6 +4,7 @@ export interface ReactDiffViewerStyles {
   diffContainer?: string;
   diffRemoved?: string;
   diffAdded?: string;
+  diffChanged?: string;
   line?: string;
   highlightedGutter?: string;
   contentText?: string;
@@ -34,6 +35,7 @@ export interface ReactDiffViewerStylesVariables {
   addedColor?: string;
   removedBackground?: string;
   removedColor?: string;
+  changedBackground?: string;
   wordAddedBackground?: string;
   wordRemovedBackground?: string;
   addedGutterBackground?: string;
@@ -59,6 +61,7 @@ export interface ReactDiffViewerStylesOverride {
   diffContainer?: Interpolation;
   diffRemoved?: Interpolation;
   diffAdded?: Interpolation;
+  diffChanged?: Interpolation;
   marker?: Interpolation;
   emptyGutter?: Interpolation;
   highlightedLine?: Interpolation;
@@ -94,6 +97,7 @@ export default (
         addedColor: '#24292e',
         removedBackground: '#ffeef0',
         removedColor: '#24292e',
+        changedBackground: '#fffbdd',
         wordAddedBackground: '#acf2bd',
         wordRemovedBackground: '#fdb8c0',
         addedGutterBackground: '#cdffd8',
@@ -123,6 +127,7 @@ export default (
         addedColor: 'white',
         removedBackground: '#632F34',
         removedColor: 'white',
+        changedBackground: '#3e302c',
         wordAddedBackground: '#055d67',
         wordRemovedBackground: '#7d383f',
         addedGutterBackground: '#034148',
@@ -222,6 +227,14 @@ export default (
       color: variables.addedGutterColor,
     },
     label: 'diff-added',
+  });
+
+  const diffChanged = css({
+    background: variables.changedBackground,
+    [`.${lineNumber}`]: {
+      color: variables.gutterColor,
+    },
+    label: 'diff-changed',
   });
 
   const wordDiff = css({
@@ -345,6 +358,7 @@ export default (
     diffContainer,
     diffRemoved,
     diffAdded,
+    diffChanged,
     splitView,
     marker,
     highlightedGutter,

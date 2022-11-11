@@ -2,17 +2,8 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import cn from 'classnames';
 
-import {
-  computeLineInformation,
-  LineInformation,
-  DiffInformation,
-  DiffType,
-  DiffMethod,
-} from './compute-lines';
-import computeStyles, {
-  ReactDiffViewerStyles,
-  ReactDiffViewerStylesOverride,
-} from './styles';
+import {computeLineInformation, DiffInformation, DiffMethod, DiffType, LineInformation,} from './compute-lines';
+import computeStyles, {ReactDiffViewerStyles, ReactDiffViewerStylesOverride,} from './styles';
 
 const m = require('memoize-one');
 
@@ -234,6 +225,7 @@ class DiffViewer extends React.Component<
       this.props.highlightLines.includes(additionalLineNumberTemplate);
     const added = type === DiffType.ADDED;
     const removed = type === DiffType.REMOVED;
+    const changed = type === DiffType.CHANGED;
     let content;
     if (Array.isArray(value)) {
       content = this.renderWordDiff(value, this.props.renderContent);
@@ -254,6 +246,7 @@ class DiffViewer extends React.Component<
               [this.styles.emptyGutter]: !lineNumber,
               [this.styles.diffAdded]: added,
               [this.styles.diffRemoved]: removed,
+              [this.styles.diffChanged]: changed,
               [this.styles.highlightedGutter]: highlightLine,
             })}
           >
@@ -270,6 +263,7 @@ class DiffViewer extends React.Component<
               [this.styles.emptyGutter]: !additionalLineNumber,
               [this.styles.diffAdded]: added,
               [this.styles.diffRemoved]: removed,
+              [this.styles.diffChanged]: changed,
               [this.styles.highlightedGutter]: highlightLine,
             })}
           >
@@ -292,6 +286,7 @@ class DiffViewer extends React.Component<
             [this.styles.emptyLine]: !content,
             [this.styles.diffAdded]: added,
             [this.styles.diffRemoved]: removed,
+            [this.styles.diffChanged]: changed,
             [this.styles.highlightedLine]: highlightLine,
           })}
         >
@@ -305,6 +300,7 @@ class DiffViewer extends React.Component<
             [this.styles.emptyLine]: !content,
             [this.styles.diffAdded]: added,
             [this.styles.diffRemoved]: removed,
+            [this.styles.diffChanged]: changed,
             [this.styles.highlightedLine]: highlightLine,
           })}
         >
@@ -511,7 +507,7 @@ class DiffViewer extends React.Component<
       oldValue,
       newValue,
       disableWordDiff,
-      compareMethod,
+      DiffMethod.CHARS,
       linesOffset,
     );
     const extraLines =
@@ -521,6 +517,7 @@ class DiffViewer extends React.Component<
     let skippedLines: number[] = [];
     return lineInformation.map(
       (line: LineInformation, i: number): JSX.Element => {
+
         const diffBlockStart = diffLines[0];
         const currentPosition = diffBlockStart - i;
         if (this.props.showDiffOnly) {
@@ -534,7 +531,9 @@ class DiffViewer extends React.Component<
               typeof diffBlockStart === 'undefined') &&
             !this.state.expandedBlocks.includes(diffBlockStart)
           ) {
+            console.log('skipping', line)
             skippedLines.push(i + 1);
+            // show skipped line indicator only if there is more than one line to hide
             if (i === lineInformation.length - 1 && skippedLines.length > 1) {
               return this.renderSkippedLineIndicator(
                 skippedLines.length,
@@ -542,8 +541,10 @@ class DiffViewer extends React.Component<
                 line.left.lineNumber,
                 line.right.lineNumber,
               );
+              // if we are trying to hide the last line, just show it
+            } else if (i < lineInformation.length - 1) {
+              return null;
             }
-            return null;
           }
         }
 
@@ -582,7 +583,7 @@ class DiffViewer extends React.Component<
       hideLineNumbers,
     } = this.props;
 
-    if (this.props.compareMethod !== 'diffJson') {
+    if (this.props.compareMethod !== DiffMethod.JSON) {
       if (typeof oldValue !== 'string' || typeof newValue !== 'string') {
         throw Error('"oldValue" and "newValue" should be strings');
       }
