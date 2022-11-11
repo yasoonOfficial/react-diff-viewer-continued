@@ -3,15 +3,16 @@
 <br/>
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat)](#contributors)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-[![npm version](https://badge.fury.io/js/react-diff-viewer-continued.svg)](https://badge.fury.io/js/react-diff-viewer-continued)
+[![npm version](https://img.shields.io/npm/v/react-diff-viewer-continued)](https://www.npmjs.com/package/react-diff-viewer-continued)
+[![npm downloads](https://img.shields.io/npm/dw/react-diff-viewer-continued)](https://www.npmjs.com/package/react-diff-viewer-continued)
 [![GitHub license](https://img.shields.io/github/license/aeolun/react-diff-viewer-continued.svg)](https://github.com/aeolun/react-diff-viewer-continued/blob/master/LICENSE)
 
 A simple and beautiful text diff viewer component made with [Diff](https://github.com/kpdecker/jsdiff) and [React](https://reactjs.org).
 
-Inspired from Github diff viewer, it includes features like split view, inline view, word diff, line highlight and more. It is highly customizable and it supports almost all languages.
+Inspired by the Github diff viewer, it includes features like split view, inline view, word diff, line highlight and more. It is highly customizable and it supports almost all languages.
 
 Most credit goes to [Pranesh Ravi](https://praneshravi.in) who created the [original diff viewer](https://github.com/praneshr/react-diff-viewer). I've just made a few modifications and updated the dependencies so they work with modern stacks.
 
