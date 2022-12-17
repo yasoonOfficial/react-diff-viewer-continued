@@ -268,6 +268,7 @@ const computeLineInformation = (
       ...getLineInformation(value, index, added, removed),
     ];
   });
+
   return {
     lineInformation,
     diffLines,
