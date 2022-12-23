@@ -1,3 +1,10 @@
+## [3.2.4](https://github.com/aeolun/react-diff-viewer-continued/compare/v3.2.3...v3.2.4) (2022-12-23)
+
+
+### Bug Fixes
+
+* to deploy previous fixes ([06d8361](https://github.com/aeolun/react-diff-viewer-continued/commit/06d83614204d0c48c3ac654b06c43ba42f679c56))
+
 ## [3.2.3](https://github.com/aeolun/react-diff-viewer-continued/compare/v3.2.2...v3.2.3) (2022-11-11)
 
 
