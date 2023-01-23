@@ -240,7 +240,8 @@ export default (
   const wordDiff = css({
     padding: 2,
     display: 'inline-flex',
-    borderRadius: 1,
+    borderRadius: 4,
+    wordBreak: 'break-all',
     label: 'word-diff',
   });
 
