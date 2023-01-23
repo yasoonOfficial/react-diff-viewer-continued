@@ -1,3 +1,10 @@
+## [3.2.5](https://github.com/aeolun/react-diff-viewer-continued/compare/v3.2.4...v3.2.5) (2023-01-23)
+
+
+### Bug Fixes
+
+* correctly break strings for long values so size remains within bounds ([cfa5de1](https://github.com/aeolun/react-diff-viewer-continued/commit/cfa5de1905644c34152dc8a692191d1e32410353))
+
 ## [3.2.4](https://github.com/aeolun/react-diff-viewer-continued/compare/v3.2.3...v3.2.4) (2022-12-23)
 
 
