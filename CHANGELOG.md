@@ -1,3 +1,10 @@
+## [3.2.6](https://github.com/aeolun/react-diff-viewer-continued/compare/v3.2.5...v3.2.6) (2023-03-02)
+
+
+### Bug Fixes
+
+* release for chore fix ([9775afa](https://github.com/aeolun/react-diff-viewer-continued/commit/9775afac2388942d97c839954186eb5b4fd64c3c))
+
 ## [3.2.5](https://github.com/aeolun/react-diff-viewer-continued/compare/v3.2.4...v3.2.5) (2023-01-23)
 
 
