@@ -29,7 +29,7 @@ module.exports = {
           {
             loader: 'ts-loader',
             options: {
-              configFile: 'tsconfig.examples.json',
+              configFile: 'tsconfig.json',
             },
           },
         ],
