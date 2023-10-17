@@ -121,6 +121,7 @@ const computeDiff = (
  * @param disableWordDiff Flag to enable/disable word diff.
  * @param lineCompareMethod JsDiff text diff method from https://github.com/kpdecker/jsdiff/tree/v4.0.1#api
  * @param linesOffset line number to start counting from
+ * @param showLines lines that are always shown, regardless of diff
  */
 const computeLineInformation = (
   oldString: string | Object,
@@ -128,6 +129,7 @@ const computeLineInformation = (
   disableWordDiff: boolean = false,
   lineCompareMethod: string = DiffMethod.CHARS,
   linesOffset: number = 0,
+  showLines: string[] = [],
 ): ComputedLineInformation => {
   let diffArray: Diff.Change[] = [];
 
@@ -251,6 +253,10 @@ const computeLineInformation = (
           right.lineNumber = rightLineNumber;
           right.type = DiffType.DEFAULT;
           right.value = line;
+        }
+
+        if (showLines?.includes(`L-${left.lineNumber}`) || showLines?.includes(`R-${right.lineNumber}`) && !diffLines.includes(counter)) {
+          diffLines.push(counter)
         }
 
         if (!evaluateOnlyFirstLine) {

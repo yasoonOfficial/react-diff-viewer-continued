@@ -181,8 +181,8 @@ class Example extends Component<{}, ExampleState> {
           <ReactDiff
             highlightLines={this.state.highlightLine}
             onLineNumberClick={this.onLineNumberClick}
-            showLines={['R30']}
-            extraLinesSurroundingDiff={2}
+            alwaysShowLines={['L-30']}
+            extraLinesSurroundingDiff={1}
             oldValue={this.state.compareMethod === DiffMethod.JSON ? oldJson : oldJs}
             compareMethod={this.state.compareMethod}
             splitView={this.state.splitView}

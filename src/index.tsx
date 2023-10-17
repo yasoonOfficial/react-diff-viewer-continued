@@ -5,6 +5,7 @@ import cn from 'classnames';
 import {computeLineInformation, DiffInformation, DiffMethod, DiffType, LineInformation,} from './compute-lines';
 import computeStyles, {ReactDiffViewerStyles, ReactDiffViewerStylesOverride,} from './styles';
 import {ReactElement} from "react";
+import {computeHiddenBlocks} from "./compute-hidden-blocks";
 
 const m = require('memoize-one');
 
@@ -35,7 +36,7 @@ export interface ReactDiffViewerProps {
   /**
    * Show the lines indicated here. Specified as L20 or R18 for respectively line 20 on the left or line 18 on the right.
    */
-  showLines?: string[]
+  alwaysShowLines?: string[]
   // Show only diff between the two values.
   showDiffOnly?: boolean;
   // Render prop to format final string before displaying them in the UI.
@@ -481,6 +482,8 @@ class DiffViewer extends React.Component<
     );
   };
 
+
+
   /**
    * Generates the entire diff view.
    */
@@ -499,43 +502,37 @@ class DiffViewer extends React.Component<
       disableWordDiff,
       compareMethod,
       linesOffset,
+      this.props.alwaysShowLines
     );
+
     const extraLines =
       this.props.extraLinesSurroundingDiff < 0
         ? 0
         : Math.round(this.props.extraLinesSurroundingDiff);
-    let skippedLines: number[] = [];
+
+    const { lineBlocks, blocks } = computeHiddenBlocks(lineInformation, diffLines, extraLines)
+
     return lineInformation.map(
       (line: LineInformation, lineIndex: number): ReactElement => {
 
-        const diffBlockStart = diffLines[0];
-        const currentPosition = diffBlockStart - lineIndex;
-
         if (this.props.showDiffOnly) {
+          const blockIndex = lineBlocks[lineIndex]
 
-          if (currentPosition === -extraLines) {
-            skippedLines = [];
-            diffLines.shift();
-          }
-          if (
-            line.left.type === DiffType.DEFAULT &&
-            (currentPosition > extraLines ||
-              diffBlockStart === undefined) &&
-            !this.state.expandedBlocks.includes(diffBlockStart)
-          ) {
-            skippedLines.push(lineIndex + 1);
-
-            // show skipped line indicator only if there is more than one line to hide
-            if (diffBlockStart === lineIndex + 1 && skippedLines.length > 1) {
-              return this.renderSkippedLineIndicator(
-                skippedLines.length,
-                diffBlockStart,
-                line.left.lineNumber,
-                line.right.lineNumber,
+          if (blockIndex !== undefined) {
+            const lastLineOfBlock = blocks[blockIndex].endLine === lineIndex;
+            if (!this.state.expandedBlocks.includes(blockIndex) && lastLineOfBlock) {
+              return (
+                <React.Fragment key={lineIndex}>
+                  {this.renderSkippedLineIndicator(
+                    blocks[blockIndex].lines,
+                    blockIndex,
+                    line.left.lineNumber,
+                    line.right.lineNumber,
+                  )}
+                </React.Fragment>
               );
-              // if we are trying to hide the last line, just show it
-            } else if (lineIndex < lineInformation.length - 1) {
-              return null;
+            } else if (!this.state.expandedBlocks.includes(blockIndex)) {
+              return null
             }
           }
         }
@@ -544,21 +541,7 @@ class DiffViewer extends React.Component<
           ? this.renderSplitView(line, lineIndex)
           : this.renderInlineView(line, lineIndex);
 
-        if (currentPosition === extraLines && skippedLines.length > 0) {
-          const { length } = skippedLines;
-          skippedLines = [];
-          return (
-            <React.Fragment key={lineIndex}>
-              {this.renderSkippedLineIndicator(
-                length,
-                diffBlockStart,
-                line.left.lineNumber,
-                line.right.lineNumber,
-              )}
-              {diffNodes}
-            </React.Fragment>
-          );
-        }
+
         return diffNodes;
       },
     );
