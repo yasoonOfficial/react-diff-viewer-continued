@@ -1,3 +1,15 @@
+# [3.3.0](https://github.com/aeolun/react-diff-viewer-continued/compare/v3.2.6...v3.3.0) (2023-10-17)
+
+
+### Bug Fixes
+
+* update dependencies and correct zero width extraLines (fixes [#29](https://github.com/aeolun/react-diff-viewer-continued/issues/29)) ([c4b317a](https://github.com/aeolun/react-diff-viewer-continued/commit/c4b317af31935740dd9fe8ac526ceb8fd63db6a9))
+
+
+### Features
+
+* add ability to always show certain lines ([896eb32](https://github.com/aeolun/react-diff-viewer-continued/commit/896eb323389cec2055abc7dede40adcbcbf6b506))
+
 ## [3.2.6](https://github.com/aeolun/react-diff-viewer-continued/compare/v3.2.5...v3.2.6) (2023-03-02)
 
 
