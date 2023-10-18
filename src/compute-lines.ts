@@ -136,8 +136,8 @@ const computeLineInformation = (
   // Use diffLines for strings, and diffJson for objects...
   if (typeof oldString === 'string' && typeof newString === 'string') {
     diffArray = diff.diffLines(
-      oldString.trimRight(),
-      newString.trimRight(),
+      oldString,
+      newString,
       {
         newlineIsToken: false,
         ignoreWhitespace: false,
