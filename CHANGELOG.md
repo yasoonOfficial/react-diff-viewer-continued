@@ -1,3 +1,10 @@
+## [3.3.1](https://github.com/aeolun/react-diff-viewer-continued/compare/v3.3.0...v3.3.1) (2023-10-18)
+
+
+### Bug Fixes
+
+* correct imports (fixes [#31](https://github.com/aeolun/react-diff-viewer-continued/issues/31)) ([64a05a9](https://github.com/aeolun/react-diff-viewer-continued/commit/64a05a99e4cbde494597d923b73b9740cb1661cb))
+
 # [3.3.0](https://github.com/aeolun/react-diff-viewer-continued/compare/v3.2.6...v3.3.0) (2023-10-17)
 
 
