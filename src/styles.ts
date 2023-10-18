@@ -9,6 +9,7 @@ export interface ReactDiffViewerStyles {
   line?: string;
   highlightedGutter?: string;
   contentText?: string;
+  lineContent?: string;
   gutter?: string;
   highlightedLine?: string;
   lineNumber?: string;
@@ -17,11 +18,13 @@ export interface ReactDiffViewerStyles {
   wordAdded?: string;
   wordRemoved?: string;
   codeFoldGutter?: string;
+  codeFoldContentContainer?: string;
   emptyGutter?: string;
   emptyLine?: string;
   codeFold?: string;
   titleBlock?: string;
   content?: string;
+  column?: string;
   splitView?: string;
   [key: string]: string | undefined;
 }
@@ -75,9 +78,11 @@ export interface ReactDiffViewerStylesOverride {
   wordAdded?: CSSInterpolation;
   wordRemoved?: CSSInterpolation;
   codeFoldGutter?: CSSInterpolation;
+  codeFoldContentContainer?: CSSInterpolation;
   codeFold?: CSSInterpolation;
   emptyLine?: CSSInterpolation;
   content?: CSSInterpolation;
+  column?: CSSInterpolation;
   titleBlock?: CSSInterpolation;
   splitView?: CSSInterpolation;
 }
@@ -160,31 +165,33 @@ export default (
   const content = css({
     width: '100%',
     label: 'content',
+    flex: 1
   });
 
   const splitView = css({
-    [`.${content}`]: {
-      width: '50%',
-    },
     label: 'split-view',
   });
 
   const diffContainer = css({
     width: '100%',
+    minWidth: '1000px',
+    overflowX: 'auto',
     background: variables.diffViewerBackground,
     pre: {
       margin: 0,
       whiteSpace: 'pre-wrap',
-      lineHeight: '25px',
+      lineHeight: '1.6em',
+      width: 'fit-content'
     },
     label: 'diff-container',
     borderCollapse: 'collapse',
+    display: 'flex'
   });
 
-  const codeFoldContent = css({
-    color: variables.codeFoldContentColor,
-    label: 'code-fold-content',
-  });
+  const lineContent = css({
+    overflow: 'hidden',
+    width: '100%'
+  })
 
   const contentText = css({
     color: variables.diffViewerColor,
@@ -193,7 +200,10 @@ export default (
 
   const titleBlock = css({
     background: variables.diffViewerTitleBackground,
-    padding: 10,
+    padding: '0.5em',
+    lineHeight: '1.4em',
+    height: "2.4em",
+    overflow: 'hidden',
     borderBottom: `1px solid ${variables.diffViewerTitleBorderColor}`,
     label: 'title-block',
     ':last-child': {
@@ -262,12 +272,25 @@ export default (
   const codeFoldGutter = css({
     backgroundColor: variables.codeFoldGutterBackground,
     label: 'code-fold-gutter',
+    minWidth: '50px'
+  });
+
+  const codeFoldContentContainer = css({
+    padding: '8px 16px'
+  });
+
+  const codeFoldContent = css({
+    color: variables.codeFoldContentColor,
+    label: 'code-fold-content',
   });
 
   const codeFold = css({
     backgroundColor: variables.codeFoldBackground,
     height: 40,
     fontSize: 14,
+    display: 'flex',
+    alignItems: 'center',
+    userSelect: 'none',
     fontWeight: 700,
     label: 'code-fold',
     a: {
@@ -282,10 +305,11 @@ export default (
   const emptyLine = css({
     backgroundColor: variables.emptyLineBackground,
     label: 'empty-line',
+    flex: 1,
   });
 
   const marker = css({
-    width: 25,
+    width: 28,
     paddingLeft: 10,
     paddingRight: 10,
     userSelect: 'none',
@@ -357,7 +381,13 @@ export default (
   const line = css({
     verticalAlign: 'baseline',
     label: 'line',
+    height: '1.6em',
+    display: 'flex',
   });
+
+  const column = css({
+    flex: 1
+  })
 
   const defaultStyles: any = {
     diffContainer,
@@ -370,16 +400,19 @@ export default (
     highlightedLine,
     gutter,
     line,
+    lineContent,
     wordDiff,
     wordAdded,
     wordRemoved,
     codeFoldGutter,
+    codeFoldContentContainer,
     codeFold,
     emptyGutter,
     emptyLine,
     lineNumber,
     contentText,
     content,
+    column,
     codeFoldContent,
     titleBlock,
   };

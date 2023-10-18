@@ -191,7 +191,7 @@ class Example extends Component<{}, ExampleState> {
               this.state.customGutter
                 ? (diffData) => {
                     return (
-                      <td
+                      <div
                         className={
                           diffData.type !== undefined
                             ? cn(diffData.styles.gutter)
@@ -214,7 +214,7 @@ class Example extends Component<{}, ExampleState> {
                             ? '==='
                             : undefined}
                         </pre>
-                      </td>
+                      </div>
                     );
                   }
                 : undefined
