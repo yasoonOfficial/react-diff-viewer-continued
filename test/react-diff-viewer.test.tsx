@@ -27,13 +27,13 @@ describe('Testing react diff viewer', (): void => {
   it('It should render a table', (): void => {
     const node = render(<DiffViewer oldValue={oldCode} newValue={newCode} />);
 
-    expect(node.getAllByRole('table').length).toEqual(1);
+    expect(node.getAllByRole('table').length).toEqual(2);
   });
 
   it('It should render diff lines in diff view', (): void => {
     const node = render(<DiffViewer oldValue={oldCode} newValue={newCode} />);
 
-    expect(node.getAllByRole('row').length).toEqual(7);
+    expect(node.getAllByRole('row').length).toEqual(14);
   });
 
   it('It should render diff lines in inline view', (): void => {

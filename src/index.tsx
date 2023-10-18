@@ -227,7 +227,7 @@ class DiffViewer extends React.Component<
     }
 
     return (
-      <div className={this.styles.line}>
+      <div className={this.styles.line} role={'row'}>
         {!this.props.hideLineNumbers && (
           <div
             onClick={
@@ -589,7 +589,7 @@ class DiffViewer extends React.Component<
           [this.styles.splitView]: splitView,
         })}
       >
-        <div className={this.styles.column}>
+        <div className={this.styles.column} role={'table'}>
           <div
             className={cn(this.styles.titleBlock, this.styles.column)}
           >
@@ -597,7 +597,7 @@ class DiffViewer extends React.Component<
           </div>
           {nodes.leftLines}
         </div>
-        {nodes.rightLines.length > 0 ? <div className={this.styles.column}>
+        {nodes.rightLines.length > 0 ? <div className={this.styles.column} role={'table'}>
           <div
             className={cn(this.styles.titleBlock, this.styles.column)}
           >
