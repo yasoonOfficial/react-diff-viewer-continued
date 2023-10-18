@@ -1,4 +1,5 @@
 examples
+lib/examples
 test
 *.svg
 src
