@@ -1,12 +1,13 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import {ReactElement} from 'react';
 import cn from 'classnames';
 
 import {computeLineInformation, DiffInformation, DiffMethod, DiffType, LineInformation,} from './compute-lines';
 import computeStyles, {ReactDiffViewerStyles, ReactDiffViewerStylesOverride,} from './styles';
-import {ReactElement} from "react";
-import {computeHiddenBlocks} from "./compute-hidden-blocks";
+import {Block, computeHiddenBlocks} from "./compute-hidden-blocks";
 import IntrinsicElements = React.JSX.IntrinsicElements;
+import {Expand} from "./expand";
+import {Fold} from "./fold";
 
 const m = require('memoize-one');
 
@@ -69,6 +70,10 @@ export interface ReactDiffViewerProps {
   styles?: ReactDiffViewerStylesOverride;
   // Use dark theme.
   useDarkTheme?: boolean;
+  /**
+   * Used to describe the thing being diffed
+   */
+  summary?: string | ReactElement;
   // Title for left column
   leftTitle?: string | ReactElement;
   // Title for left column
@@ -519,7 +524,7 @@ class DiffViewer extends React.Component<
   /**
    * Generates the entire diff view.
    */
-  private renderDiff = (): {leftLines: ReactElement[], rightLines: ReactElement[]} => {
+  private renderDiff = (): {leftLines: ReactElement[], rightLines: ReactElement[], lineInformation: LineInformation[], blocks: Block[] } => {
     const {
       oldValue,
       newValue,
@@ -577,7 +582,7 @@ class DiffViewer extends React.Component<
         rightLines.push(...right)
       },
     );
-    return {leftLines, rightLines};
+    return {leftLines, rightLines, lineInformation, blocks};
   };
 
   public render = (): ReactElement => {
@@ -600,36 +605,67 @@ class DiffViewer extends React.Component<
 
     this.styles = this.computeStyles(this.props.styles, useDarkTheme, nonce);
     const nodes = this.renderDiff();
-    const colSpanOnSplitView = hideLineNumbers ? 2 : 3;
-    const colSpanOnInlineView = hideLineNumbers ? 2 : 4;
-    let columnExtension = this.props.renderGutter ? 1 : 0;
+    let deletions = 0, additions = 0
+    nodes.lineInformation.forEach((l) => {
+      if (l.left.type === DiffType.ADDED) {
+        additions++
+      }
+      if (l.right.type === DiffType.ADDED) {
+        additions++
+      }
+      if (l.left.type === DiffType.REMOVED) {
+        deletions++
+      }
+      if (l.right.type === DiffType.REMOVED) {
+        deletions++
+      }
+    })
+    const totalChanges = deletions + additions
 
-    console.log(nodes.rightLines)
+    const percentageAddition = Math.round((additions / totalChanges) * 100)
+    const blocks: ReactElement[] = []
+    for(let i = 0; i < 5; i++) {
+      if (percentageAddition > i * 20) {
+        blocks.push(<span key={i} className={cn(this.styles.block, this.styles.blockAddition)} />)
+      } else {
+        blocks.push(<span key={i} className={cn(this.styles.block, this.styles.blockDeletion)} />)
+      }
+    }
+    const allExpanded = this.state.expandedBlocks.length === nodes.blocks.length
 
     return (
-      <div
-        className={cn(this.styles.diffContainer, {
-          [this.styles.splitView]: splitView,
-        })}
-      >
-        <div className={this.styles.column} role={'table'} title={`Diff information for ${leftTitle}`}>
-          <div
-            className={cn(this.styles.titleBlock, this.styles.column)}
-            role={'columnheader'}
-          >
-            <pre className={this.styles.contentText}>{leftTitle}</pre>
-          </div>
-          {nodes.leftLines}
+      <div>
+        <div className={this.styles.summary} role={'banner'}>
+          <a style={{ cursor: 'pointer'}} onClick={() => {
+            this.setState({
+              expandedBlocks: allExpanded ? [] : nodes.blocks.map(b => b.index)
+            })
+          }}>{allExpanded ? <Fold /> : <Expand />}</a> {totalChanges} <div style={{ display: 'flex', gap: '1px'}}>{blocks}</div> {this.props.summary ? <span>{this.props.summary}</span> : null}
         </div>
-        {nodes.rightLines.length > 0 ? <div className={this.styles.column} role={'table'} title={`Diff information for ${rightTitle}`}>
-          <div
-            className={cn(this.styles.titleBlock, this.styles.column)}
-            role={'columnheader'}
-          >
-            <pre className={this.styles.contentText}>{rightTitle}</pre>
+        <div
+          className={cn(this.styles.diffContainer, {
+            [this.styles.splitView]: splitView,
+          })}
+        >
+          <div className={this.styles.column} role={'table'} title={`Diff information for ${leftTitle}`}>
+            {leftTitle ? <div
+              className={cn(this.styles.titleBlock, this.styles.column)}
+              role={'columnheader'}
+            >
+              <pre className={this.styles.contentText}>{leftTitle}</pre>
+            </div> : null }
+            {nodes.leftLines}
           </div>
-          {nodes.rightLines}
-        </div> : null}
+          {nodes.rightLines.length > 0 ? <div className={this.styles.column} role={'table'} title={`Diff information for ${rightTitle}`}>
+            {rightTitle ? <div
+              className={cn(this.styles.titleBlock, this.styles.column)}
+              role={'columnheader'}
+            >
+              <pre className={this.styles.contentText}>{rightTitle}</pre>
+            </div> : null}
+            {nodes.rightLines}
+          </div> : null}
+        </div>
       </div>
     );
   };

@@ -18,6 +18,7 @@ export interface ReactDiffViewerStyles {
   wordAdded?: string;
   wordRemoved?: string;
   codeFoldGutter?: string;
+  summary?: string;
   codeFoldContentContainer?: string;
   emptyGutter?: string;
   emptyLine?: string;
@@ -151,7 +152,7 @@ export default (
         removedGutterColor: '#8c8c8c',
         codeFoldContentColor: '#656a8b',
         diffViewerTitleBackground: '#2f323e',
-        diffViewerTitleColor: '#555a7b',
+        diffViewerTitleColor: '#757a9b',
         diffViewerTitleBorderColor: '#353846',
       },
       ...(overrideVariables.dark || {}),
@@ -171,6 +172,17 @@ export default (
   const splitView = css({
     label: 'split-view',
   });
+
+  const summary = css({
+    background: variables.diffViewerTitleBackground,
+    color: variables.diffViewerTitleColor,
+    padding: '0.5em 1em',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.5em',
+    fontFamily: "monospace",
+    fill: variables.diffViewerTitleColor,
+  })
 
   const diffContainer = css({
     width: '100%',
@@ -261,11 +273,13 @@ export default (
 
   const wordAdded = css({
     background: variables.wordAddedBackground,
+    textDecoration: 'none',
     label: 'word-added',
   });
 
   const wordRemoved = css({
     background: variables.wordRemovedBackground,
+    textDecoration: 'none',
     label: 'word-removed',
   });
 
@@ -283,6 +297,24 @@ export default (
     color: variables.codeFoldContentColor,
     label: 'code-fold-content',
   });
+
+  const block = css({
+    display: 'block',
+    width: '10px',
+    height: '10px',
+    backgroundColor: '#ddd',
+    borderWidth: '1px',
+    borderStyle: 'solid',
+    borderColor: variables.diffViewerTitleBorderColor
+  });
+
+  const blockAddition = css({
+    backgroundColor: variables.wordAddedBackground
+  })
+
+  const blockDeletion = css({
+    backgroundColor: variables.wordRemovedBackground
+  })
 
   const codeFold = css({
     backgroundColor: variables.codeFoldBackground,
@@ -404,6 +436,10 @@ export default (
     lineContent,
     wordDiff,
     wordAdded,
+    summary,
+    block,
+    blockAddition,
+    blockDeletion,
     wordRemoved,
     codeFoldGutter,
     codeFoldContentContainer,

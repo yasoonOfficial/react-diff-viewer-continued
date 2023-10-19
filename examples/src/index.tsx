@@ -18,6 +18,7 @@ interface ExampleState {
   language?: string;
   theme: 'dark' | 'light';
   enableSyntaxHighlighting?: boolean;
+  columnHeaders: boolean;
   compareMethod?: DiffMethod;
   customGutter?: boolean;
 }
@@ -31,6 +32,7 @@ class Example extends Component<{}, ExampleState> {
       highlightLine: [],
       theme: 'dark',
       splitView: true,
+      columnHeaders: true,
       customGutter: true,
       enableSyntaxHighlighting: true,
       compareMethod: DiffMethod.CHARS
@@ -149,6 +151,22 @@ class Example extends Component<{}, ExampleState> {
               <label className={'switch'}>
                 <input
                   type="checkbox"
+                  checked={this.state.columnHeaders}
+                  onChange={() => {
+                    this.setState({
+                      columnHeaders:
+                        !this.state.columnHeaders,
+                    });
+                  }}
+                />
+                <span className="slider round"></span>
+              </label>
+              <span>Column Headers</span>
+            </div>
+            <div>
+              <label className={'switch'}>
+                <input
+                  type="checkbox"
                   checked={this.state.customGutter}
                   onChange={() => {
                     this.setState({
@@ -225,8 +243,9 @@ class Example extends Component<{}, ExampleState> {
                 : undefined
             }
             useDarkTheme={this.state.theme === 'dark'}
-            leftTitle={`${this.state.compareMethod === DiffMethod.JSON ? 'package.json' : 'webpack.config.js'} master@2178133 - pushed 2 hours ago.`}
-            rightTitle={`${this.state.compareMethod === DiffMethod.JSON ? 'package.json' : 'webpack.config.js'} master@64207ee - pushed 13 hours ago.`}
+            summary={this.state.compareMethod === DiffMethod.JSON ? 'package.json' : 'webpack.config.js'}
+            leftTitle={this.state.columnHeaders ? `master@2178133 - pushed 2 hours ago.` : undefined}
+            rightTitle={this.state.columnHeaders ? `master@64207ee - pushed 13 hours ago.` : undefined}
           />
         </div>
         <footer>

@@ -1,7 +1,7 @@
 import {DiffType, LineInformation} from "./compute-lines";
 import {ReactElement} from "react";
 
-interface Block {
+export interface Block {
   index: number
   startLine: number
   endLine: number
