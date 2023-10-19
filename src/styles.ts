@@ -383,6 +383,7 @@ export default (
     label: 'line',
     height: '1.6em',
     display: 'flex',
+    textDecoration: 'none'
   });
 
   const column = css({

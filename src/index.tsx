@@ -6,6 +6,7 @@ import {computeLineInformation, DiffInformation, DiffMethod, DiffType, LineInfor
 import computeStyles, {ReactDiffViewerStyles, ReactDiffViewerStylesOverride,} from './styles';
 import {ReactElement} from "react";
 import {computeHiddenBlocks} from "./compute-hidden-blocks";
+import IntrinsicElements = React.JSX.IntrinsicElements;
 
 const m = require('memoize-one');
 
@@ -174,17 +175,31 @@ class DiffViewer extends React.Component<
     renderer?: (chunk: string) => JSX.Element,
   ): ReactElement[] => {
     return diffArray.map((wordDiff, i): JSX.Element => {
-      return (
-        <span
+      const content = renderer ? renderer(wordDiff.value as string) : wordDiff.value
+
+      return wordDiff.type === DiffType.ADDED ?
+        <ins
           key={i}
           className={cn(this.styles.wordDiff, {
             [this.styles.wordAdded]: wordDiff.type === DiffType.ADDED,
+          })}
+        >
+          {content}
+        </ins>
+      : wordDiff.type === DiffType.REMOVED ? <del
+          key={i}
+          className={cn(this.styles.wordDiff, {
             [this.styles.wordRemoved]: wordDiff.type === DiffType.REMOVED,
           })}
         >
-          {renderer ? renderer(wordDiff.value as string) : wordDiff.value}
+          {content}
+        </del> : <span
+          key={i}
+          className={cn(this.styles.wordDiff)}
+        >
+          {content}
         </span>
-      );
+    ;
     });
   };
 
@@ -218,7 +233,8 @@ class DiffViewer extends React.Component<
     const removed = type === DiffType.REMOVED;
     const changed = type === DiffType.CHANGED;
     let content;
-    if (Array.isArray(value)) {
+    const hasWordDiff = Array.isArray(value)
+    if (hasWordDiff) {
       content = this.renderWordDiff(value, this.props.renderContent);
     } else if (this.props.renderContent) {
       content = this.props.renderContent(value);
@@ -226,8 +242,15 @@ class DiffViewer extends React.Component<
       content = value;
     }
 
+    let ElementType: keyof IntrinsicElements = 'div'
+    if (added && !hasWordDiff) {
+      ElementType = 'ins'
+    } else if (removed && !hasWordDiff) {
+      ElementType = 'del'
+    }
+
     return (
-      <div className={this.styles.line} role={'row'}>
+      <ElementType className={this.styles.line} role={'row'} title={added && !hasWordDiff ? "Added line" : removed && !hasWordDiff ? "Removed line" : undefined}>
         {!this.props.hideLineNumbers && (
           <div
             onClick={
@@ -297,7 +320,7 @@ class DiffViewer extends React.Component<
         >
           <pre className={this.styles.contentText}>{content}</pre>
         </div>
-      </div>
+      </ElementType>
     );
   };
 
@@ -589,17 +612,19 @@ class DiffViewer extends React.Component<
           [this.styles.splitView]: splitView,
         })}
       >
-        <div className={this.styles.column} role={'table'}>
+        <div className={this.styles.column} role={'table'} title={`Diff information for ${leftTitle}`}>
           <div
             className={cn(this.styles.titleBlock, this.styles.column)}
+            role={'columnheader'}
           >
             <pre className={this.styles.contentText}>{leftTitle}</pre>
           </div>
           {nodes.leftLines}
         </div>
-        {nodes.rightLines.length > 0 ? <div className={this.styles.column} role={'table'}>
+        {nodes.rightLines.length > 0 ? <div className={this.styles.column} role={'table'} title={`Diff information for ${rightTitle}`}>
           <div
             className={cn(this.styles.titleBlock, this.styles.column)}
+            role={'columnheader'}
           >
             <pre className={this.styles.contentText}>{rightTitle}</pre>
           </div>
