@@ -1,3 +1,25 @@
+# [4.0.0](https://github.com/aeolun/react-diff-viewer-continued/compare/v3.3.0...v4.0.0) (2023-10-19)
+
+
+### Bug Fixes
+
+* do not trim trailing newlines (fixes [#27](https://github.com/aeolun/react-diff-viewer-continued/issues/27)) ([ee4d53f](https://github.com/aeolun/react-diff-viewer-continued/commit/ee4d53f8e2ba3e374b51bffef3a00d3fe6206d02))
+* use semantic elements for diff elements (fixes [#23](https://github.com/aeolun/react-diff-viewer-continued/issues/23)) ([a6222c7](https://github.com/aeolun/react-diff-viewer-continued/commit/a6222c7af151e7dc29046c8eac916271866b4899))
+
+
+* feat!: diff/flexbox based layout, text selectable per side (fixes #15) ([9f6c4d5](https://github.com/aeolun/react-diff-viewer-continued/commit/9f6c4d59e84ecb44761c39e172ffab6a689d5779)), closes [#15](https://github.com/aeolun/react-diff-viewer-continued/issues/15)
+
+
+### Features
+
+* add summary element and fold expansion/folding (fixes [#22](https://github.com/aeolun/react-diff-viewer-continued/issues/22), [#21](https://github.com/aeolun/react-diff-viewer-continued/issues/21)) ([e47cbe1](https://github.com/aeolun/react-diff-viewer-continued/commit/e47cbe1286a2143b0f8078a683e96edea0ed967b))
+
+
+### BREAKING CHANGES
+
+* This completely modifies the way react-diff-viewer-continued is rendered. The overall
+layout should be more or less the same, but with the new layout probably come new bugs.
+
 # [3.3.0](https://github.com/aeolun/react-diff-viewer-continued/compare/v3.2.6...v3.3.0) (2023-10-17)
 
 
