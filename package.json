@@ -19,8 +19,8 @@
     "Pranesh Ravi<praneshpranesh@gmail.com>",
     "Bart Riepe <bart@serial-experiments.com>"
   ],
-  "main": "lib/index",
-  "typings": "lib/index",
+  "main": "lib/src/index",
+  "typings": "lib/src/index",
   "scripts": {
     "build": "tsc --outDir lib/",
     "build:examples": "webpack --progress",
