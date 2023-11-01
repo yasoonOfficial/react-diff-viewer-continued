@@ -1,3 +1,10 @@
+## [4.0.1](https://github.com/aeolun/react-diff-viewer-continued/compare/v4.0.0...v4.0.1) (2023-11-01)
+
+
+### Bug Fixes
+
+* publish files on 4.x ([650c249](https://github.com/aeolun/react-diff-viewer-continued/commit/650c249c5bf1d8b27d780b65555df5ae0f5d9e2b))
+
 # [4.0.0](https://github.com/aeolun/react-diff-viewer-continued/compare/v3.3.0...v4.0.0) (2023-10-19)
 
 
