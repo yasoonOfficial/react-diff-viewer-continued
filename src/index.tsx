@@ -33,6 +33,8 @@ export interface ReactDiffViewerProps {
   extraLinesSurroundingDiff?: number;
   // Show/hide line number.
   hideLineNumbers?: boolean;
+  // Show/hide `+`/`-` markers.
+  hideMarkers?: boolean;
   /**
    * Show the lines indicated here. Specified as L20 or R18 for respectively line 20 on the left or line 18 on the right.
    */
@@ -96,6 +98,7 @@ class DiffViewer extends React.Component<
     compareMethod: DiffMethod.CHARS,
     styles: {},
     hideLineNumbers: false,
+    hideMarkers: false,
     extraLinesSurroundingDiff: 3,
     showDiffOnly: true,
     useDarkTheme: false,
@@ -272,20 +275,22 @@ class DiffViewer extends React.Component<
               styles: this.styles,
             })
           : null}
-        <td
-          className={cn(this.styles.marker, {
-            [this.styles.emptyLine]: !content,
-            [this.styles.diffAdded]: added,
-            [this.styles.diffRemoved]: removed,
-            [this.styles.diffChanged]: changed,
-            [this.styles.highlightedLine]: highlightLine,
-          })}
-        >
-          <pre>
-            {added && '+'}
-            {removed && '-'}
-          </pre>
-        </td>
+        {!this.props.hideMarkers && (
+          <td
+            className={cn(this.styles.marker, {
+              [this.styles.emptyLine]: !content,
+              [this.styles.diffAdded]: added,
+              [this.styles.diffRemoved]: removed,
+              [this.styles.diffChanged]: changed,
+              [this.styles.highlightedLine]: highlightLine,
+            })}
+          >
+            <pre>
+              {added && '+'}
+              {removed && '-'}
+            </pre>
+          </td>
+        )}
         <td
           className={cn(this.styles.content, {
             [this.styles.emptyLine]: !content,
@@ -556,6 +561,7 @@ class DiffViewer extends React.Component<
       rightTitle,
       splitView,
       hideLineNumbers,
+      hideMarkers,
       nonce,
     } = this.props;
 
@@ -567,9 +573,15 @@ class DiffViewer extends React.Component<
 
     this.styles = this.computeStyles(this.props.styles, useDarkTheme, nonce);
     const nodes = this.renderDiff();
-    const colSpanOnSplitView = hideLineNumbers ? 2 : 3;
-    const colSpanOnInlineView = hideLineNumbers ? 2 : 4;
-    let columnExtension = this.props.renderGutter ? 1 : 0;
+    let colSpanOnSplitView = hideLineNumbers ? 2 : 3;
+    let colSpanOnInlineView = hideLineNumbers ? 2 : 4;
+
+    if (hideMarkers) {
+      colSpanOnSplitView -= 1;
+      colSpanOnInlineView -= 1;
+    }
+
+    const columnExtension = this.props.renderGutter ? 1 : 0;
 
     const title = (leftTitle || rightTitle) && (
       <tr>
