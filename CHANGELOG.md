@@ -1,3 +1,10 @@
+# [3.4.0](https://github.com/aeolun/react-diff-viewer-continued/compare/v3.3.2...v3.4.0) (2024-01-31)
+
+
+### Features
+
+* add `hideMarkers` ([#37](https://github.com/aeolun/react-diff-viewer-continued/issues/37)) ([c004629](https://github.com/aeolun/react-diff-viewer-continued/commit/c00462912344d441a1d491313230064eb096a6a7))
+
 ## [3.3.2](https://github.com/aeolun/react-diff-viewer-continued/compare/v3.3.1...v3.3.2) (2024-01-31)
 
 
