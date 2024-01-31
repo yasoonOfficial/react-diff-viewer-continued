@@ -1,3 +1,10 @@
+## [3.3.2](https://github.com/aeolun/react-diff-viewer-continued/compare/v3.3.1...v3.3.2) (2024-01-31)
+
+
+### Bug Fixes
+
+* correct the default value of `useDarkTheme` in README ([#39](https://github.com/aeolun/react-diff-viewer-continued/issues/39)) ([8233d02](https://github.com/aeolun/react-diff-viewer-continued/commit/8233d02a2d90e6c49a2ecd183d46982b9905d7c3))
+
 ## [3.3.1](https://github.com/aeolun/react-diff-viewer-continued/compare/v3.3.0...v3.3.1) (2023-10-18)
 
 
