@@ -1,3 +1,10 @@
+## [4.0.2](https://github.com/aeolun/react-diff-viewer-continued/compare/v4.0.1...v4.0.2) (2024-02-14)
+
+
+### Bug Fixes
+
+* revert back to table based layout, add example image (fixes [#35](https://github.com/aeolun/react-diff-viewer-continued/issues/35), [#15](https://github.com/aeolun/react-diff-viewer-continued/issues/15), [#21](https://github.com/aeolun/react-diff-viewer-continued/issues/21)) ([a1571ab](https://github.com/aeolun/react-diff-viewer-continued/commit/a1571ab9940c8b917c2e845f537780e4b45efb01))
+
 ## [4.0.1](https://github.com/aeolun/react-diff-viewer-continued/compare/v4.0.0...v4.0.1) (2023-11-01)
 
 
