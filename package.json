@@ -1,5 +1,5 @@
 {
-  "name": "react-diff-viewer-continued",
+  "name": "@yasoonofficial/react-diff-viewer-continued",
   "version": "3.4.0",
   "private": false,
   "description": "Continuation of a simple and beautiful text diff viewer component made with diff and React",
@@ -13,7 +13,14 @@
     "react-component",
     "ui"
   ],
-  "repository": "git@github.com:aeolun/react-diff-viewer-continued.git",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/yasoonOfficial/react-diff-viewer-continued.git",
+    "directory": "packages/react-diff-viewer-continued"
+  },
   "license": "MIT",
   "authors": [
     "Pranesh Ravi<praneshpranesh@gmail.com>",
@@ -21,6 +28,10 @@
   ],
   "main": "lib/src/index",
   "typings": "lib/src/index",
+  "sideEffects": false,
+  "files": [
+    "lib/**/*"
+  ],
   "scripts": {
     "build": "tsc --outDir lib/",
     "build:examples": "webpack --progress",
